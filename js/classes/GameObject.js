@@ -1,15 +1,18 @@
 export class GameObject {
-    constructor({width, height, position, context, border, style, gameObjects, name}) {
-        this.context = context;
-        this.border = border;
+    constructor({width, height, position, style, name, collided, playground}) {
+        this.playground = playground;
+        this.context = this.playground.context;
+        this.border = this.playground.border;
         this.style = style;
-        this.gameObjects = gameObjects
         this.name = name;
-
+        this.canCollided = collided;
+        this.gameObjects = this.playground.gameObjects;
         this.width = width;
         this.height = height;
-        this.position = position
+        this.position = position;
+
         this.gravity = 0;
+        this.sizeMultiplier = 16;
     }
 
     update() {

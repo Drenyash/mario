@@ -11,3 +11,8 @@ body {
     width: 100vw;
     height: 100vh;
 }
+
+canvas {
+    display: flex;
+    height: 100vh;
+}

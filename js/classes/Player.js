@@ -4,8 +4,18 @@ export class Player extends Entity {
     constructor(...props) {
         super(...props);
 
+        this.width = 4 * this.sizeMultiplier - 0.01;
+        this.height = 4 * this.sizeMultiplier- 0.01;
+        this.position = {
+            x: 10,
+            y: window.innerHeight - (this.height * 2) + 2
+        };
+        this.style = 'blue';
         this.moveX = 0;
         this.isJumping = false;
+        this.canCollided = true;
+        this.isSit = false;
+        this.sitValue = 20;
     }
 
     setMove() {
@@ -21,6 +31,11 @@ export class Player extends Entity {
                     this.moveX = this.moveSpeed;
                     break;
                 case 83:
+                    if (!this.isSit) {
+                        this.height = this.height - this.sitValue
+                        this.position.y += this.sitValue
+                    }
+                    this.isSit = true;
                     break;
                 case 65:
                     this.moveX = -this.moveSpeed;
@@ -35,6 +50,13 @@ export class Player extends Entity {
                 case 65:
                     this.moveX = 0;
                     break;
+                case 83:
+                    if (this.isSit) {
+                        this.height = this.height + this.sitValue
+                        this.position.y -= this.sitValue
+                    }
+                    this.isSit = false;
+                    break;
             }
         })
         if (this.gravity === 0) {
@@ -42,9 +64,15 @@ export class Player extends Entity {
         }
     }
 
+    fallCheck() {
+        if (this.position.y + this.height > this.border.maxHeight) {
+            this.playground.stop()
+        }
+    }
+
     update() {
         super.update();
-        this.setMove()
-        this.checkWindowCollision()
+        this.setMove();
+        this.fallCheck();
     }
 }
